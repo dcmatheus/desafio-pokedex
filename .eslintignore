@@ -1,0 +1,4 @@
+#cypress
+cypress/plugins
+cypress/support
+cypress/downloads

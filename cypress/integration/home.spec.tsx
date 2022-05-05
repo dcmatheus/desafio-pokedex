@@ -13,6 +13,23 @@ describe('Home Screen', () => {
       cy.get('[data-testid="header-title"]').should('have.text', 'Pokedex');
     });
   });
+  describe('PokemonList', () => {
+    it('Renders ten pokemons at first', () => {
+      cy.get('[data-testid*="pokemon-item"]').should(($el) => {
+        expect($el).to.have.lengthOf(10);
+      });
+    });
+    it('Renders ten more pokemons when scrolling to the end', () => {
+      cy.scrollTo('bottom');
+      cy.get('[data-testid*="pokemon-item"]').should(($el) => {
+        expect($el).to.have.lengthOf(20);
+      });
+      cy.scrollTo('bottom');
+      cy.get('[data-testid*="pokemon-item"]').should(($el) => {
+        expect($el).to.have.lengthOf(30);
+      });
+    });
+  });
 });
 
 export {};

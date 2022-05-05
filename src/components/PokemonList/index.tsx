@@ -1,43 +1,56 @@
 import {
-  Box, Center, SimpleGrid, Spinner,
+  Box, Center, Image, SimpleGrid, Spinner, Text,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { getPokemons } from '../../api';
+import { useState } from 'react';
+import { getPokemonsWithInfos } from '../../api';
+import useIsVisible from '../../hooks/useIsVisible';
 
 type Pokemon = {
+  id: number;
   name: string;
+  sprite: string;
+  types: string[];
 };
 
 function PokemonList() {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([{ name: 'Loading...' }]);
-  const [nextUrl, setNextUrl] = useState('');
-  async function getTenPokemons() {
-    const res = await getPokemons();
-    setPokemons(res.results);
-    setNextUrl(res.next);
-  }
-  useEffect(() => {
-    getTenPokemons();
-  }, []);
+  const [total, setTotal] = useState<number>(0);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [url, setUrl] = useState<string>();
 
-  async function getMorePokemons() {
-    const res = await getPokemons(nextUrl);
-    const newPokes: Pokemon[] = [...pokemons, ...res.results];
-    setPokemons(newPokes);
-    setNextUrl(res.next);
+  async function getPokemons() {
+    const { pokemons: newPokemons, next, count } = await getPokemonsWithInfos(url);
+    setPokemons([...pokemons, ...newPokemons]);
+    setUrl(next);
+    setTotal(count);
   }
 
-  return (
+  const [ref] = useIsVisible(getPokemons);
+  return pokemons.length ? (
     <>
       <SimpleGrid columns={[1, 1, 2]} spacing="15px" m="5">
-        {pokemons.map((pokemon: Pokemon, index) => (
-          <Box bg="primary" h="md" key={pokemon.name} onClick={() => getMorePokemons()} data-testid={`pokemon-item-${index + 1}`}>{pokemon.name}</Box>
+        { pokemons.map((pokemon: Pokemon, index) => (
+          <Box
+            bg="primary"
+            h="md"
+            key={pokemon.name}
+            data-testid={`pokemon-item-${index + 1}`}
+          >
+            <Image src="" />
+            <Text>{pokemon.id }</Text>
+            <Text>{pokemon.name}</Text>
+          </Box>
         ))}
       </SimpleGrid>
-      <Center>
-        <Spinner color="primary" size="xl" />
-      </Center>
+      {
+        total > pokemons.length && (
+          <Center marginBottom="2">
+            <Spinner color="primary" size="xl" ref={ref} />
+          </Center>
+        )
+      }
     </>
+  ) : (
+    <Center h="100vh" bg="secondary" ref={ref}><Spinner color="primary" size="xl" /></Center>
   );
 }
 

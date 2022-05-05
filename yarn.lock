@@ -7190,7 +7190,6 @@ __metadata:
     html-webpack-plugin: 4
     react: ^18.0.0
     react-dom: ^18.0.0
-    react-infinite-scroll-component: ^6.1.0
     react-router-dom: ^6.3.0
     typescript: ^4.6.3
     vite: ^2.9.5
@@ -7235,13 +7234,6 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: b6937a38c80c7f84d9c11dd75e49d5c44f71d95e810a3250bd1f1797fc7117c57698204adf676b71497acc205d769d65c16ae8fa10afad832ae1322630aef10a
-  languageName: node
-  linkType: hard
-
-"throttle-debounce@npm:^2.1.0":
-  version: 2.3.0
-  resolution: "throttle-debounce@npm:2.3.0"
-  checksum: 6d90aa2ddb294f8dad13d854a1cfcd88fdb757469669a096a7da10f515ee466857ac1e750649cb9da931165c6f36feb448318e7cb92570f0a3679d20e860a925
   languageName: node
   linkType: hard
 
